@@ -147,7 +147,7 @@ const mockTestProviderStore: TestProviderStoreById = {
   setState: vi.fn(),
   settingsChanged: vi.fn(),
   onRunAll: vi.fn(),
-  onClearAll: vi.fn(),
+  onClearAll: vi.fn(() => vi.fn()),
   runWithState: vi.fn((callback) => callback()),
   testProviderId: 'test-provider-id',
 };
@@ -197,6 +197,14 @@ describe('TestManager', () => {
 
     expect(testManager).toBeInstanceOf(TestManager);
     expect(createVitest).toHaveBeenCalled();
+  });
+
+  it('should clear component test and a11y statuses on clearAll', async () => {
+    await TestManager.start(options);
+    const clearAllCallback = mockTestProviderStore.onClearAll.mock.calls[0][0];
+    clearAllCallback();
+    expect(mockComponentTestStatusStore.unset).toHaveBeenCalledWith();
+    expect(mockA11yStatusStore.unset).toHaveBeenCalledWith();
   });
 
   it('should handle run request', async () => {

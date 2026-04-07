@@ -76,6 +76,10 @@ export class TestManager {
 
     this.store.subscribe('TRIGGER_RUN', this.handleTriggerRunEvent.bind(this));
     this.store.subscribe('CANCEL_RUN', this.handleCancelEvent.bind(this));
+    this.testProviderStore.onClearAll(() => {
+      this.componentTestStatusStore.unset();
+      this.a11yStatusStore.unset();
+    });
     this.store
       .untilReady()
       .then(() => {
