@@ -89,6 +89,16 @@ Run commands from the repository root unless stated otherwise.
 
 For routine agent work, prefer the faster non-production commands first. Add `-c production` only when you need sandbox-related NX tasks or you are explicitly matching CI behavior.
 
+### NX project names
+
+NX uses short project names from each package's `project.json`, **not** npm package names. For example:
+
+- The core package (`storybook` on npm) is `core` in NX
+- Addons use the pattern `addon-<name>` (e.g., `addon-vitest`, `addon-a11y`, `addon-docs`)
+- Frameworks use their short name (e.g., `nextjs`, `angular`, `react-vite`)
+
+Run `npx nx show projects` to see all available project names. Common ones: `core`, `addon-vitest`, `addon-a11y`, `addon-docs`, `cli`, `react`, `vue3`, `svelte`, `nextjs`.
+
 ### Install and compile
 
 ```bash
@@ -122,8 +132,9 @@ yarn storybook:vitest
 | Scenario                        | Command                                                                        |
 | ------------------------------- | ------------------------------------------------------------------------------ |
 | Compile everything quickly      | `yarn nx run-many -t compile`                                                  |
-| Compile one package             | `yarn nx compile <package-name>`                                               |
+| Compile one package             | `yarn nx compile <project-name>` (e.g., `yarn nx compile core`)                |
 | Check TypeScript errors quickly | `yarn nx run-many -t check`                                                    |
+| Check one package               | `yarn nx check <project-name>` (e.g., `yarn nx check addon-vitest`)            |
 | Start the internal Storybook UI | `cd code && yarn storybook:ui`                                                 |
 | Build the internal Storybook UI | `cd code && yarn storybook:ui:build`                                           |
 | Run unit tests                  | `yarn test`                                                                    |
